@@ -63,4 +63,32 @@ public class PartnerServiceTest {
         verify(partnerMapper, times(1)).toEntity(partnerCreateDTO);
         verify(partnerRepository, times(1)).save(partnerEntity);
     }
+
+    @Test
+    void testDeletePartner_Success() {
+        // Arrange
+        Long partnerId = 1L;
+        when(partnerRepository.existsById(partnerId)).thenReturn(true);
+
+        // Act
+        boolean result = partnerService.deletePartner(partnerId);
+
+        // Assert
+        assertTrue(result);
+        verify(partnerRepository, times(1)).deleteById(partnerId);
+    }
+
+    @Test
+    void testDeletePartner_NotFound() {
+        // Arrange
+        Long partnerId = 1L;
+        when(partnerRepository.existsById(partnerId)).thenReturn(false);
+
+        // Act
+        boolean result = partnerService.deletePartner(partnerId);
+
+        // Assert
+        assertFalse(result);
+        verify(partnerRepository, times(0)).deleteById(partnerId);
+    }
 }

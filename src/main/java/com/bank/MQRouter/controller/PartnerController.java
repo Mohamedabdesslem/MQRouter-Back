@@ -5,7 +5,6 @@ import com.bank.MQRouter.model.Direction;
 import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.model.ProcessedFlowType;
 import com.bank.MQRouter.service.PartnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +27,16 @@ public class PartnerController {
         validateEnums(partnerDTO);
         PartnerEntity savedPartner = partnerService.createPartner(partnerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.toDTO(savedPartner));
+    }
+
+    @DeleteMapping("/deletepartner/{id}")
+    public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
+        boolean isDeleted = partnerService.deletePartner(id);
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     private void validateEnums(PartnerCreateDTO dto) {

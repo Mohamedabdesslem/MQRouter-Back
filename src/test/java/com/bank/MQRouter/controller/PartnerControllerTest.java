@@ -1,19 +1,19 @@
 package com.bank.MQRouter.controller;
+
 import com.bank.MQRouter.dto.PartnerCreateDTO;
 import com.bank.MQRouter.model.Direction;
 import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.model.ProcessedFlowType;
 import com.bank.MQRouter.service.PartnerService;
-import com.bank.MQRouter.mapper.PartnerMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PartnerController.class)
@@ -24,7 +24,7 @@ class PartnerControllerTest {
 
     @MockBean
     private PartnerService partnerService;
-    
+
     @Test
     void testCreatePartner() throws Exception {
 
@@ -62,5 +62,31 @@ class PartnerControllerTest {
                         .contentType("application/json")
                         .content("{\"alias\": \"Partner1\", \"type\": \"Type1\", \"direction\": \"INVALID_DIRECTION\", \"processedFlowType\": \"INVALID_TYPE\", \"description\": \"Description of partner\"}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testDeletePartner_Success() throws Exception {
+        // Arrange
+        Long partnerId = 1L;
+        when(partnerService.deletePartner(partnerId)).thenReturn(true);
+
+        // Act et Assert
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/partners/deletepartner/{id}", partnerId))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        verify(partnerService, times(1)).deletePartner(partnerId);
+    }
+
+    @Test
+    void testDeletePartner_NotFound() throws Exception {
+        // Arrange
+        Long partnerId = 1L;
+        when(partnerService.deletePartner(partnerId)).thenReturn(false);
+
+        // Act et Assert
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/partners/deletepartner/{id}", partnerId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        verify(partnerService, times(1)).deletePartner(partnerId);
     }
 }

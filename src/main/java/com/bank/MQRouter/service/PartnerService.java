@@ -26,6 +26,14 @@ public class PartnerService {
         return partnerRepository.save(partnerEntity);
     }
 
+    public boolean deletePartner(Long id) {
+        if (partnerRepository.existsById(id)) {
+            partnerRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
     public PartnerCreateDTO toDTO(PartnerEntity partnerEntity) {
         return partnerMapper.toDto(partnerEntity);
     }
