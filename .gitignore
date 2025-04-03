@@ -1,0 +1,12 @@
+# Ignorer le répertoire .idea (répertoire de configuration IntelliJ IDEA)
+.idea/
+
+# Ignorer le répertoire .mvn (répertoire de configuration Maven)
+.mvn/
+
+# Ignorer le fichier .gitattributes
+.gitattributes
+
+# Ignorer les fichiers Maven Wrapper
+mvnw
+mvnw.cmd
