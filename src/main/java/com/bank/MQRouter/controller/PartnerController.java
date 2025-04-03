@@ -5,6 +5,9 @@ import com.bank.MQRouter.model.Direction;
 import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.model.ProcessedFlowType;
 import com.bank.MQRouter.service.PartnerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,12 @@ public class PartnerController {
         this.partnerService = partnerService;
     }
 
+    @Operation(summary = "Ajouter un partenaire", description = "Ajoute un nouveau partenaire au système")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Partenaire ajouté avec succès"),
+            @ApiResponse(responseCode = "400", description = "Données invalides pour le partenaire"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
     @PostMapping("/addpartner")
     public ResponseEntity<?> createPartner(@Valid @RequestBody PartnerCreateDTO partnerDTO,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -46,6 +55,12 @@ public class PartnerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.toDTO(savedPartner));
     }
 
+    @Operation(summary = "Supprimer un partenaire", description = "Supprime un partenaire en fonction de son ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Partenaire supprimé avec succès"),
+            @ApiResponse(responseCode = "404", description = "Partenaire non trouvé"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
     @DeleteMapping("/deletepartner/{id}")
     public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
         boolean isDeleted = partnerService.deletePartner(id);
@@ -57,6 +72,12 @@ public class PartnerController {
     }
 
     // Méthode pour récupérer la liste des partenaires avec pagination
+    @Operation(summary = "Obtenir la liste des partenaires", description = "Récupère tous les partenaires avec pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des partenaires récupérée avec succès"),
+            @ApiResponse(responseCode = "400", description = "Requête invalide"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
     @GetMapping("/listpartners")
     public ResponseEntity<Page<PartnerCreateDTO>> getPartners(
             @RequestParam(defaultValue = "0") int page,

@@ -35,6 +35,8 @@
 		<ibmmq.version>9.2.4.0</ibmmq.version>
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
 		<mapstruct.version>1.5.2.Final</mapstruct.version>
+		<hibernate-validatort.version>6.1.7.Final</hibernate-validatort.version>
+		<springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
 	</properties>
 
 	<dependencies>
@@ -88,7 +90,7 @@
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.1.7.Final</version>
+			<version>${hibernate-validatort.version}</version>
 		</dependency>
 
 		<dependency>
@@ -113,6 +115,19 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${mapstruct.version}</version>
 			<scope>provided</scope> <!-- Ce code est uniquement utilisé à la compilation -->
+		</dependency>
+
+		<!-- Spring Boot Starter Web pour créer des API REST -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Dépendance Springdoc OpenAPI pour Swagger -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
 
 	</dependencies>
