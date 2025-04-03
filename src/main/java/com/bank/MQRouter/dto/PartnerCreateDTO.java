@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PartnerCreateDTO {
 
+    private Long id;
+
     @NotBlank(message = "Alias is required")
     private String alias;
 
