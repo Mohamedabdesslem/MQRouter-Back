@@ -29,10 +29,12 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>11</java.version>
+		<springbootmavenplugin.version>2.7.18</springbootmavenplugin.version>
 		<lombok.version>1.18.30</lombok.version>
 		<h2database.version>1.4.200</h2database.version>
 		<ibmmq.version>9.2.4.0</ibmmq.version>
+		<javax.validation.version>2.0.1.Final</javax.validation.version>
+		<mapstruct.version>1.5.2.Final</mapstruct.version>
 	</properties>
 
 	<dependencies>
@@ -76,6 +78,13 @@
 			<version>${ibmmq.version}</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-activemq</artifactId> <!-- Cette dépendance est utilisée pour une implémentation JMS générique -->
@@ -84,6 +93,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+
+		<!-- MapStruct Processor pour la génération de code à la compilation -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>provided</scope> <!-- Ce code est uniquement utilisé à la compilation -->
 		</dependency>
 
 	</dependencies>
@@ -100,13 +123,18 @@
 							<artifactId>lombok</artifactId>
 							<version>${lombok.version}</version>
 						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.7.18</version>
+				<version>${springbootmavenplugin.version}</version>
 			</plugin>
 		</plugins>
 	</build>
