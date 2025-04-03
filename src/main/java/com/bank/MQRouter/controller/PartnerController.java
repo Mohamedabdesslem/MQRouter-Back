@@ -5,8 +5,12 @@ import com.bank.MQRouter.model.Direction;
 import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.model.ProcessedFlowType;
 import com.bank.MQRouter.service.PartnerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,8 +27,23 @@ public class PartnerController {
     }
 
     @PostMapping("/addpartner")
-    public ResponseEntity<PartnerCreateDTO> createPartner(@Valid @RequestBody PartnerCreateDTO partnerDTO) {
-        validateEnums(partnerDTO);
+    public ResponseEntity<?> createPartner(@Valid @RequestBody PartnerCreateDTO partnerDTO,  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder("Validation errors: ");
+            bindingResult.getFieldErrors().forEach(error ->
+                    errorMessage.append(error.getField()).append(" - ").append(error.getDefaultMessage()).append("; ")
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+        }
+
+        // Validate enums manually (Direction, ProcessedFlowType)
+        try {
+            Direction.valueOf(partnerDTO.getDirection());
+            ProcessedFlowType.valueOf(partnerDTO.getProcessedFlowType());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( "Invalid value for Direction or ProcessedFlowType");
+        }
+
         PartnerEntity savedPartner = partnerService.createPartner(partnerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.toDTO(savedPartner));
     }
@@ -39,13 +58,16 @@ public class PartnerController {
         }
     }
 
-    private void validateEnums(PartnerCreateDTO dto) {
-        try {
-            Direction.valueOf(dto.getDirection());  // Vérifie si la direction est valide
-            ProcessedFlowType.valueOf(dto.getProcessedFlowType());  // Vérifie si le type est valide
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Valeur invalide pour Direction ou ProcessedFlowType");
-        }
+    // Méthode pour récupérer la liste des partenaires avec pagination
+    @GetMapping("/listpartners")
+    public ResponseEntity<Page<PartnerCreateDTO>> getPartners(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PartnerCreateDTO> partners = partnerService.getPartners(pageable);
+
+        return new ResponseEntity<>(partners, HttpStatus.OK);
     }
 
 }

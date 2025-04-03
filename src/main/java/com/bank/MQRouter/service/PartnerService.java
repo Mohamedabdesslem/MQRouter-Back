@@ -5,6 +5,8 @@ import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.repository.PartnerRepository;
 import com.bank.MQRouter.mapper.PartnerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -32,6 +34,12 @@ public class PartnerService {
             return true;
         }
         return false;
+    }
+
+    // Méthode pour récupérer la liste des partenaires avec pagination
+    public Page<PartnerCreateDTO> getPartners(Pageable pageable) {
+        return partnerRepository.findAll(pageable)
+                .map(partnerMapper::toDto);
     }
 
     public PartnerCreateDTO toDTO(PartnerEntity partnerEntity) {

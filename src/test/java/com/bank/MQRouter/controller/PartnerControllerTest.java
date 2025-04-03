@@ -9,9 +9,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,5 +97,30 @@ class PartnerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         verify(partnerService, times(1)).deletePartner(partnerId);
+    }
+
+    @Test
+    void testGetPartners() throws Exception {
+        // Arrange
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<PartnerCreateDTO> partnerList = IntStream.range(0, size)
+                .mapToObj(i -> new PartnerCreateDTO())
+                .collect(Collectors.toList());
+
+        Page<PartnerCreateDTO> partnerPage = new PageImpl<>(partnerList, pageable, partnerList.size());
+
+        when(partnerService.getPartners(pageable)).thenReturn(partnerPage);
+
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/partners/listpartners")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(size));
+
+        verify(partnerService, times(1)).getPartners(pageable);
     }
 }
