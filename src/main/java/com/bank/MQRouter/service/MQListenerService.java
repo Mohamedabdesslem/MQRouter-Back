@@ -29,7 +29,7 @@ public class MQListenerService {
      * @param message le message reçu
      * @throws JMSException si une erreur survient lors de la lecture du message
      */
-    @JmsListener(destination = "YOUR_QUEUE_NAME")
+    @JmsListener(destination = "YOUR_QUEUE_NAME", containerFactory = "jmsListenerContainerFactory")
     public void onMessage(Message message) throws JMSException {
         if (message instanceof TextMessage) {
             // Récupère le contenu du message
