@@ -14,4 +14,11 @@ Les utilisateurs ont également la possibilité d'ajouter des **partenaires** po
 http://localhost:8080/swagger-ui/index.html
 
 ## Base de données utilisée 
-H2
+La base de données utilisée c'est H2, il faut télécharger le JAR h2-1.4.200.jar et le lancer
+Pour se connecter à la base de données 
+URL JDBC: jdbc:h2:~/MQRouter
+Nom d'utilisateur: sa
+Mot de passe:
+
+## Connexion IBM MQ
+Pour l'objet ConnectionFactory dans la classe MQConfig, j'ai utilisé des valeurs arbitraires pour les paramètres du MQConnectionFactory. Il faudra les adapter en fonction des véritables paramètres de connexion à l'IBM MQ.
