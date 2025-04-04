@@ -1,8 +1,7 @@
-package com.bank.MQRouter.controller;
+package com.bank.MQRouter.service;
 
 import com.bank.MQRouter.model.MessageEntity;
 import com.bank.MQRouter.repository.MessageRepository;
-import com.bank.MQRouter.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-public class MessageControllerTest {
+public class MessageServiceTest {
 
 
     @InjectMocks

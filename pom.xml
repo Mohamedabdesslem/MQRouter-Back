@@ -37,6 +37,8 @@
 		<mapstruct.version>1.5.2.Final</mapstruct.version>
 		<hibernate-validatort.version>6.1.7.Final</hibernate-validatort.version>
 		<springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
+		<jjwt.version>0.9.1</jjwt.version>
+		<spring-security-test.version>5.8.0</spring-security-test.version>
 	</properties>
 
 	<dependencies>
@@ -51,6 +53,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<dependency>
@@ -114,13 +121,7 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${mapstruct.version}</version>
-			<scope>provided</scope> <!-- Ce code est uniquement utilisé à la compilation -->
-		</dependency>
-
-		<!-- Spring Boot Starter Web pour créer des API REST -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Dépendance Springdoc OpenAPI pour Swagger -->
@@ -128,6 +129,19 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${springdoc-openapi-ui.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>${spring-security-test.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
