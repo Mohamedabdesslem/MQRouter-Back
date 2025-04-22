@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
-public interface PartnerMapper {
+public  interface PartnerMapper {
 
     // Mapping PartnerCreateDTO -> PartnerEntity
     @Mapping(target = "direction", source = "direction", qualifiedByName = "stringToDirection")

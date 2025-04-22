@@ -25,7 +25,7 @@ public class MQRouterApplication {
 				registry.addMapping("/api/**") // Autoriser toutes les routes API
 						.allowedOrigins("http://localhost:4200") // Autoriser l'origine Angular
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Méthodes autorisées
-						.allowedHeaders("Authorization", "Content-Type") // Tous les headers
+						.allowedHeaders("*") // Tous les headers
 						.allowCredentials(true); // Autoriser les cookies et authentifications
 			}
 		};

@@ -11,20 +11,20 @@ public class PartnerCreateDTO {
 
     private Long id;
 
-    @NotBlank(message = "Alias is required")
+    @NotBlank(message = "Le champ Alias est requis")
     private String alias;
 
-    @NotBlank(message = "Type is required")
+    @NotBlank(message = "Le champ type est requis")
     private String type;
 
-    @NotNull(message = "Direction is required")
+    @NotNull(message = "Le champ direction est requis")
     private String  direction;
 
     private String application;
 
-    @NotNull(message = "Processed Flow Type is required")
+    @NotNull(message = "Le champ Processed Flow Type est requis")
     private String processedFlowType;
 
-    @NotBlank(message = "Description is required")
+    @NotBlank(message = "Le champ description est requis")
     private String description;
 }

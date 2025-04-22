@@ -1,6 +1,7 @@
 package com.bank.MQRouter.controller;
 
 import com.bank.MQRouter.dto.PartnerCreateDTO;
+import com.bank.MQRouter.exception.ValidationException;
 import com.bank.MQRouter.model.Direction;
 import com.bank.MQRouter.model.PartnerEntity;
 import com.bank.MQRouter.model.ProcessedFlowType;
@@ -37,20 +38,15 @@ public class PartnerController {
     @PostMapping("/addpartner")
     public ResponseEntity<?> createPartner(@Valid @RequestBody PartnerCreateDTO partnerDTO,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder("Validation errors: ");
+            StringBuilder errorMessage = new StringBuilder("Erreur : le formulaire contient des champs invalides. ");
             bindingResult.getFieldErrors().forEach(error ->
                     errorMessage.append(error.getField()).append(" - ").append(error.getDefaultMessage()).append("; ")
             );
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+            throw new ValidationException(errorMessage.toString());
         }
 
-        // Validate enums manually (Direction, ProcessedFlowType)
-        try {
-            Direction.valueOf(partnerDTO.getDirection());
-            ProcessedFlowType.valueOf(partnerDTO.getProcessedFlowType());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( "Invalid value for Direction or ProcessedFlowType");
-        }
+        Direction.valueOf(partnerDTO.getDirection());
+        ProcessedFlowType.valueOf(partnerDTO.getProcessedFlowType());
 
         PartnerEntity savedPartner = partnerService.createPartner(partnerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.toDTO(savedPartner));
